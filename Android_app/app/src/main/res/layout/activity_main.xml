@@ -73,22 +73,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rotate_slider" />
 
+        <SeekBar
+            android:id="@+id/claw_slider"
+            android:layout_width="98dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="116dp"
+            android:max="719"
+            android:min="540"
+            android:progressTint="@color/colorAccent"
+            android:scaleX="3"
+            android:scaleY="3"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.389"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/yaw_slider" />
+
         <TextView
             android:id="@+id/rotate_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="88dp"
+            android:layout_marginEnd="36dp"
             android:rotation="90"
             android:text="ROTATE"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/rotate_title2"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/rotate_title2"
+            android:id="@+id/rotate_angle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="88dp"
@@ -101,7 +116,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/rotate_title3"
+            android:id="@+id/pitch_angle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="236dp"
@@ -113,7 +128,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/rotate_title4"
+            android:id="@+id/yaw_angle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="372dp"
@@ -125,29 +140,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/rotate_title5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="508dp"
-            android:rotation="90"
-            android:text="angle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.375"
-            app:layout_constraintStart_toEndOf="@+id/rotate_slider"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/pitch_title"
             android:layout_width="62dp"
             android:layout_height="25dp"
             android:layout_marginTop="124dp"
+            android:layout_marginEnd="40dp"
             android:rotation="90"
             android:text="PITCH"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.081"
-            app:layout_constraintStart_toEndOf="@+id/rotate_title3"
             app:layout_constraintTop_toBottomOf="@+id/rotate_title" />
 
         <TextView
@@ -155,64 +157,56 @@
             android:layout_width="69dp"
             android:layout_height="26dp"
             android:layout_marginTop="120dp"
+            android:layout_marginEnd="36dp"
             android:rotation="90"
             android:text="YAW"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/rotate_title4"
             app:layout_constraintTop_toBottomOf="@+id/pitch_title" />
 
         <TextView
             android:id="@+id/claw_title"
-            android:layout_width="69dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="112dp"
+            android:layout_width="61dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="96dp"
+            android:layout_marginEnd="40dp"
             android:rotation="90"
             android:text="CLAW"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/rotate_title5"
             app:layout_constraintTop_toBottomOf="@+id/yaw_title" />
 
-        <SeekBar
-            android:id="@+id/claw_slider"
-            android:layout_width="96dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="120dp"
-            android:max="540"
-            android:min="519"
-            android:progressTint="@color/colorAccent"
-            android:scaleX="3"
-            android:scaleY="3"
-            android:stepSize="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.387"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/yaw_slider" />
-
-        <ImageButton
-            android:id="@+id/imageButton"
+        <TextView
+            android:id="@+id/claw_angle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="72dp"
+            android:layout_marginTop="504dp"
+            android:rotation="90"
+            android:text="angle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.377"
+            app:layout_constraintStart_toEndOf="@+id/rotate_slider"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/bt_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
             android:background="#A33232"
             android:rotation="90"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/info_btn"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/stat_sys_data_bluetooth" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/clear_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginLeft="36dp"
+            android:layout_marginStart="48dp"
             android:layout_marginBottom="72dp"
             android:background="#00FFFFFF"
             android:rotation="90"
@@ -226,45 +220,43 @@
             tools:ignore="VectorDrawableCompat" />
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/add_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="64dp"
-            android:layout_marginLeft="64dp"
             android:layout_marginBottom="72dp"
             android:background="#00FFFFFF"
             android:rotation="90"
             android:scaleX="2"
             android:scaleY="2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton4"
-            app:layout_constraintHorizontal_bias="0.114"
-            app:layout_constraintStart_toEndOf="@+id/imageButton2"
+            app:layout_constraintEnd_toStartOf="@+id/start_btn"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toEndOf="@+id/clear_btn"
             app:layout_constraintTop_toBottomOf="@+id/claw_slider"
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_baseline_add_24"
             tools:ignore="VectorDrawableCompat" />
 
         <ImageButton
-            android:id="@+id/imageButton4"
+            android:id="@+id/start_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="84dp"
-            android:layout_marginRight="84dp"
+            android:layout_marginEnd="72dp"
             android:layout_marginBottom="72dp"
             android:background="#00FFFFFF"
             android:rotation="90"
             android:scaleX="2"
             android:scaleY="2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/rotate_title5"
+            app:layout_constraintEnd_toStartOf="@+id/restore_pos_btn"
+            app:layout_constraintTop_toBottomOf="@+id/claw_angle"
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_baseline_play_arrow_24"
             tools:ignore="VectorDrawableCompat" />
 
         <ImageButton
-            android:id="@+id/imageButton5"
+            android:id="@+id/info_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="368dp"
@@ -276,6 +268,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_info_24"
             tools:ignore="VectorDrawableCompat" />
+
+        <ImageButton
+            android:id="@+id/restore_pos_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="72dp"
+            android:background="#00FFFFFF"
+            android:rotation="90"
+            android:scaleX="2"
+            android:scaleY="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_baseline_replay_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

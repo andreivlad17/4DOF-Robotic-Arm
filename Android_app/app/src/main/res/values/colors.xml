@@ -3,4 +3,8 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#1BA1B3</color>
+
+    <color name="bt_connected">#36A332</color>
+    <color name="bt_disconnected">#A33232</color>
+
 </resources>
