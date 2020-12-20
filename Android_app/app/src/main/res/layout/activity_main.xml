@@ -5,7 +5,8 @@
     android:id="@+id/main_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#FFFFFF"
+    android:visibility="visible"
     tools:context="com.roboticArm.roboticArmController.MainActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -28,8 +29,8 @@
             android:layout_width="95dp"
             android:layout_height="20dp"
             android:layout_marginTop="116dp"
-            android:max="539"
-            android:min="360"
+            android:max="3179"
+            android:min="3000"
             android:progressTint="@color/colorAccent"
             android:scaleX="3"
             android:scaleY="3"
@@ -45,8 +46,8 @@
             android:layout_width="96dp"
             android:layout_height="26dp"
             android:layout_marginTop="88dp"
-            android:max="179"
-            android:min="0"
+            android:max="1179"
+            android:min="1000"
             android:progressTint="@color/colorAccent"
             android:scaleX="3"
             android:scaleY="3"
@@ -62,8 +63,8 @@
             android:layout_width="96dp"
             android:layout_height="26dp"
             android:layout_marginTop="116dp"
-            android:max="359"
-            android:min="180"
+            android:max="2179"
+            android:min="2000"
             android:progressTint="@color/colorAccent"
             android:scaleX="3"
             android:scaleY="3"
@@ -78,8 +79,8 @@
             android:layout_width="98dp"
             android:layout_height="21dp"
             android:layout_marginTop="116dp"
-            android:max="719"
-            android:min="540"
+            android:max="4179"
+            android:min="4000"
             android:progressTint="@color/colorAccent"
             android:scaleX="3"
             android:scaleY="3"
@@ -191,13 +192,26 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/bt_btn"
+            android:id="@+id/bt_disconnected_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:background="#A33232"
             android:rotation="90"
+            app:layout_constraintEnd_toStartOf="@+id/info_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/stat_sys_data_bluetooth" />
+
+        <ImageButton
+            android:id="@+id/bt_connected_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:background="@color/bt_connected"
+            android:rotation="90"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/info_btn"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/stat_sys_data_bluetooth" />
@@ -259,13 +273,14 @@
             android:id="@+id/info_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="368dp"
-            android:layout_marginLeft="368dp"
+            android:layout_marginStart="304dp"
             android:layout_marginTop="16dp"
             android:background="#FFFFFF"
             android:rotation="270"
+            app:layout_constraintBottom_toTopOf="@+id/restore_pos_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_baseline_info_24"
             tools:ignore="VectorDrawableCompat" />
 
@@ -282,6 +297,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_baseline_replay_24" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
