@@ -25,17 +25,17 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
     static final int INITIAL_POSITION_ROTATE = 90;
     static final int INITIAL_POSITION_PITCH = 90;
-    static final int INITIAL_POSITION_YAW = 90;
+    static final int INITIAL_POSITION_ELBOW = 90;
     static final int INITIAL_POSITION_CLAW = 90;
 
     SeekBar rotateSlider = null;
     SeekBar pitchSlider = null;
-    SeekBar yawSlider = null;
+    SeekBar elbowSlider = null;
     SeekBar clawSlider = null;
 
     TextView rotateAngle = null;
     TextView pitchAngle = null;
-    TextView yawAngle = null;
+    TextView elbowAngle = null;
     TextView clawAngle = null;
 
     ImageButton startBtn = null;
@@ -46,7 +46,10 @@ public class MainActivity extends AppCompatActivity {
     ImageButton infoBtn = null;
 
     LinkedList<ServoPosition> automatedArmPositions = new LinkedList<>();
+    LinkedList<ServoPosition> automatedArmPositionsReversed = new LinkedList<>();
     boolean isAutomatedActive = false;
+    static int automationStep = 1;
+    static int automationIndex = 0;
 
     // Bluetooth connection components
     BluetoothAdapter bluetoothAdapter;
@@ -68,12 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
         rotateSlider = findViewById(R.id.rotate_slider);
         pitchSlider = findViewById(R.id.pitch_slider);
-        yawSlider = findViewById(R.id.yaw_slider);
+        elbowSlider = findViewById(R.id.elbow_slider);
         clawSlider = findViewById(R.id.claw_slider);
 
         rotateAngle = findViewById(R.id.rotate_angle);
         pitchAngle = findViewById(R.id.pitch_angle);
-        yawAngle = findViewById(R.id.yaw_angle);
+        elbowAngle = findViewById(R.id.elbow_angle);
         clawAngle = findViewById(R.id.claw_angle);
 
         startBtn = findViewById(R.id.start_btn);
@@ -85,16 +88,18 @@ public class MainActivity extends AppCompatActivity {
 
         rotateSlider.setProgress(INITIAL_POSITION_ROTATE + 1000);
         pitchSlider.setProgress(INITIAL_POSITION_PITCH + 2000);
-        yawSlider.setProgress(INITIAL_POSITION_YAW + 3000);
+        elbowSlider.setProgress(INITIAL_POSITION_ELBOW + 3000);
         clawSlider.setProgress(INITIAL_POSITION_CLAW + 4000);
 
         // Live angle update based on sliders' positions
         rotateAngle.setText(String.format("%d\u00B0", rotateSlider.getProgress() - 1000));
         pitchAngle.setText(String.format("%d\u00B0", pitchSlider.getProgress() - 2000));
-        yawAngle.setText(String.format("%d\u00B0", yawSlider.getProgress() - 3000));
+        elbowAngle.setText(String.format("%d\u00B0", elbowSlider.getProgress() - 3000));
         clawAngle.setText(String.format("%d\u00B0", clawSlider.getProgress() - 4000));
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+
 
         // Slider listeners
         rotateSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -104,14 +109,6 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 progressChangedValue = i;
                 rotateAngle.setText(String.format("%d\u00B0", progressChangedValue - 1000));
-                if(isBluetoothConnected){
-                    try {
-                        String writeValue = String.format("%d\n", progressChangedValue);
-                        outputStream.write(writeValue.getBytes());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
 
             @Override
@@ -121,7 +118,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //TO DO: send
+                if(isBluetoothConnected && !isAutomatedActive){
+                    try {
+                        String writeValue = String.format("%d\n", progressChangedValue);
+                        outputStream.write(writeValue.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -132,14 +136,6 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 progressChangedValue = i;
                 pitchAngle.setText(String.format("%d\u00B0", progressChangedValue - 2000));
-                if(isBluetoothConnected){
-                    try {
-                        String writeValue = String.format("%d\n", progressChangedValue);
-                        outputStream.write(writeValue.getBytes());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
 
             @Override
@@ -149,25 +145,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //TO DO: send
+                if(isBluetoothConnected && !isAutomatedActive){
+                    try {
+                        String writeValue = String.format("%d\n", progressChangedValue);
+                        outputStream.write(writeValue.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
-        yawSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        elbowSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChangedValue = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 progressChangedValue = i;
-                yawAngle.setText(String.format("%d\u00B0", progressChangedValue - 3000));
-                if(isBluetoothConnected){
-                    try {
-                        String writeValue = String.format("%d\n", progressChangedValue);
-                        outputStream.write(writeValue.getBytes());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                elbowAngle.setText(String.format("%d\u00B0", progressChangedValue - 3000));
             }
 
             @Override
@@ -177,7 +172,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //TO DO: send
+                if(isBluetoothConnected && !isAutomatedActive){
+                    try {
+                        String writeValue = String.format("%d\n", progressChangedValue);
+                        outputStream.write(writeValue.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -188,14 +190,7 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 progressChangedValue = i;
                 clawAngle.setText(String.format("%d\u00B0", progressChangedValue - 4000));
-                if(isBluetoothConnected){
-                    try {
-                        String writeValue = String.format("%d\n", progressChangedValue);
-                        outputStream.write(writeValue.getBytes());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+
             }
 
             @Override
@@ -205,7 +200,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //TO DO: send
+                if(isBluetoothConnected && !isAutomatedActive){
+                    try {
+                        String writeValue = String.format("%d\n", progressChangedValue);
+                        outputStream.write(writeValue.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -223,12 +225,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "There are no memorised positions", Toast.LENGTH_SHORT).show();
                 } else if (!isAutomatedActive) {
                     automatedArmPositions.clear();
+                    automatedArmPositionsReversed.clear();
                     Toast.makeText(MainActivity.this, "Positions cleared", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (isAutomatedActive) {
                     // TO DO: opresc automatizarea
                     isAutomatedActive = false;
                     automatedArmPositions.clear();
+                    automatedArmPositionsReversed.clear();
                     Toast.makeText(MainActivity.this, "Positions cleared", Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -240,10 +244,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isAutomatedActive) {
-                    Toast.makeText(MainActivity.this, "Stop the automation first!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Stop the automation first", Toast.LENGTH_SHORT).show();
                 } else {
-                    automatedArmPositions.add(new ServoPosition(rotateSlider.getProgress(), pitchSlider.getProgress(), yawSlider.getProgress(), clawSlider.getProgress()));
-                    Toast.makeText(MainActivity.this, "Added " + rotateSlider.getProgress() + "/" + pitchSlider.getProgress() + "/" + yawSlider.getProgress() + "/" + clawSlider.getProgress(), Toast.LENGTH_SHORT).show();
+                    automatedArmPositions.add(new ServoPosition(rotateSlider.getProgress(), pitchSlider.getProgress(), elbowSlider.getProgress(), clawSlider.getProgress()));
+                    automatedArmPositionsReversed.add(0, new ServoPosition(rotateSlider.getProgress(), pitchSlider.getProgress(), elbowSlider.getProgress(), clawSlider.getProgress()));
+                    Toast.makeText(MainActivity.this, "Added " + rotateSlider.getProgress() + "/" + pitchSlider.getProgress() + "/" + elbowSlider.getProgress() + "/" + clawSlider.getProgress(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -252,11 +257,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isAutomatedActive) {
-                    Toast.makeText(MainActivity.this, "Stop the automation first!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Stop the automation first", Toast.LENGTH_SHORT).show();
                 } else {
                     rotateSlider.setProgress(INITIAL_POSITION_ROTATE + 1000);
                     pitchSlider.setProgress(INITIAL_POSITION_PITCH + 2000);
-                    yawSlider.setProgress(INITIAL_POSITION_YAW + 3000);
+                    elbowSlider.setProgress(INITIAL_POSITION_ELBOW + 3000);
                     clawSlider.setProgress(INITIAL_POSITION_CLAW + 4000);
 
                     if(isBluetoothConnected){
@@ -273,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         try {
-                            String writeValue = String.format("%d\n", yawSlider.getProgress());
+                            String writeValue = String.format("%d\n", elbowSlider.getProgress());
                             outputStream.write(writeValue.getBytes());
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -357,13 +362,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         isBluetoothConnected = false;
                     }
-                    /*
-                    if (isBluetoothConnected) {
-                        bluetoothBtn.setBackgroundColor(R.color.bt_connected);
-                    } else {
-                        bluetoothBtn.setBackgroundColor(R.color.bt_disconnected);
-                    }*/
-
                 }
                 return false;
             }
@@ -373,6 +371,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 isAutomatedActive = !isAutomatedActive;
+                AutomationThread autoThread = new AutomationThread();
+                autoThread.start();
             }
         });
     }
@@ -389,6 +389,97 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         isBluetoothConnected = false;
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void automateMovement(){
+        ServoPosition currentPosition = automatedArmPositions.get(automationIndex);
+        rotateSlider.setProgress(currentPosition.rotateServoPosition);
+        pitchSlider.setProgress(currentPosition.pitchServoPosition);
+        elbowSlider.setProgress(currentPosition.elbowServoPosition);
+        clawSlider.setProgress(currentPosition.clawServoPosition);
+
+        if(isBluetoothConnected){
+            try {
+                String writeValue = String.format("%d\n", currentPosition.pitchServoPosition);
+                outputStream.write(writeValue.getBytes());
+                writeValue = String.format("%d\n", currentPosition.rotateServoPosition);
+                outputStream.write(writeValue.getBytes());
+                writeValue = String.format("%d\n", currentPosition.elbowServoPosition);
+                outputStream.write(writeValue.getBytes());
+                writeValue = String.format("%d\n", currentPosition.clawServoPosition);
+                outputStream.write(writeValue.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if ((automationIndex == automatedArmPositions.size() - 1) || (automationIndex == 0 && automationStep == -1)) {
+            automationStep = -automationStep;
+        }
+
+        automationIndex += automationStep;
+    }
+
+    private class AutomationThread extends Thread {
+        LinkedList<ServoPosition> armPositions = new LinkedList<>();
+
+        @SuppressLint("DefaultLocale")
+        public void run(){
+            while(isAutomatedActive) {
+                ServoPosition currentPosition = automatedArmPositions.get(automationIndex);
+                rotateSlider.setProgress(currentPosition.rotateServoPosition);
+                pitchSlider.setProgress(currentPosition.pitchServoPosition);
+                elbowSlider.setProgress(currentPosition.elbowServoPosition);
+                clawSlider.setProgress(currentPosition.clawServoPosition);
+
+                if(isBluetoothConnected){
+                    try {
+                        String writeValue = String.format("%d\n", currentPosition.pitchServoPosition);
+                        outputStream.write(writeValue.getBytes());
+                        try {
+                            sleep(150);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        writeValue = String.format("%d\n", currentPosition.rotateServoPosition);
+                        outputStream.write(writeValue.getBytes());
+                        try {
+                            sleep(150);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        /*
+                        writeValue = String.format("%d\n", currentPosition.elbowServoPosition);
+                        outputStream.write(writeValue.getBytes());
+                        try {
+                            sleep(150);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        writeValue = String.format("%d\n", currentPosition.clawServoPosition);
+                        outputStream.write(writeValue.getBytes());
+                        try {
+                            sleep(150);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        */
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if ((automationIndex == automatedArmPositions.size() - 1) || (automationIndex == 0 && automationStep == -1)) {
+                    automationStep = -automationStep;
+                }
+
+                automationIndex += automationStep;
+
+
+            }
+        }
     }
 
     private class ConnectThread extends Thread {

@@ -25,7 +25,7 @@
         tools:visibility="visible">
 
         <SeekBar
-            android:id="@+id/yaw_slider"
+            android:id="@+id/elbow_slider"
             android:layout_width="95dp"
             android:layout_height="20dp"
             android:layout_marginTop="116dp"
@@ -88,7 +88,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.389"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/yaw_slider" />
+            app:layout_constraintTop_toBottomOf="@+id/elbow_slider" />
 
         <TextView
             android:id="@+id/rotate_title"
@@ -129,7 +129,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/yaw_angle"
+            android:id="@+id/elbow_angle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="372dp"
@@ -160,7 +160,7 @@
             android:layout_marginTop="120dp"
             android:layout_marginEnd="36dp"
             android:rotation="90"
-            android:text="YAW"
+            android:text="ELBOW"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
