@@ -51,7 +51,7 @@ int initial_position_claw = 90;
 // Daca este setat pe 0, bratul va fi controlat cu componentele fizice
 // Daca este setat pe 1, acesta va astepta semnale seriale obtinute prin Bluetooth
 int mode_select = 0;
-const int mode_select_pin = 4; - digital
+const int mode_select_pin = 4; // digital
 
 // Function definition
 // writeToServos - scrierea celor 4 servo-uri
@@ -151,11 +151,12 @@ void loop() {
       elbow_pos = map(elbow_pot_value, 0, 1023, 0, 179);
       claw_pos = map(claw_pot_value, 0, 1023, 0, 179);
     }
-  } else Serial.println("Servos are not attached");
 
-  // Mutarea servo-urilor in functie de valorile calculate sau cele initiale
-  writeToServos(rotate_pos, pitch_pos, elbow_pos, claw_pos);
-  delay(50);
+    // Mutarea servo-urilor in functie de valorile calculate sau cele initiale
+    writeToServos(rotate_pos, pitch_pos, elbow_pos, claw_pos);
+    delay(50);
+    
+  } else Serial.println("Servos are not attached");
 }
 
 // Function declaration
